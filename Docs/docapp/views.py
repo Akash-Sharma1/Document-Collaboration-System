@@ -188,7 +188,7 @@ def compare(request, room_name, c_name):
             'n2': q2[0].id
         })
 
-
+# 0 nochange, 2 green, 1 red
 def textdiff(a, dic, rs):
     res = []
     for i in range(len(a)):
@@ -196,14 +196,14 @@ def textdiff(a, dic, rs):
             res.append(rs[i])
     a = a.replace("\r\n", "\n")
 
-    stra = "<span type=\"" + dic[0] + "\">"
+    stra = "<span type=\"" + str(dic[0]) + "\">"
     line = 1
     i = 0
     while i < len(a):
         if a[i] == '\n':
             stra += "</span><br>"
             if line < len(dic):
-                stra += "<span type=\"" + dic[line] + "\">"
+                stra += "<span type=\"" + str(dic[line]) + "\">"
             i += 1
             line += 1
         elif res[i] == 1:
@@ -268,7 +268,7 @@ def lcs(a, b):
             i += 2
             lineA += 1
             if wordsA > 0 and matchA == 0:
-                diffA.append('add')
+                diffA.append('1')
             else:
                 break
 
@@ -287,13 +287,13 @@ def lcs(a, b):
             j += 2
             lineB += 1
             if wordsB > 0 and matchB == 0:
-                diffB.append('remove')
+                diffB.append('2')
             else:
                 break
 
         if matchA == matchB and wordsA == matchA and wordsB == matchB and wordsA > 0:
-            diffA.append('same')
-            diffB.append('same')
+            diffA.append('0')
+            diffB.append('0')
             continue
 
         Blist = 1
@@ -320,13 +320,10 @@ def lcs(a, b):
                 lineA += 1
                 Alist += 1
 
-        op = "changed"
-        if wordsA + wordsB - matchA != 0 and matchA / (wordsA + wordsB - matchA) < 0.4:
-            changed = "removed"
         for ind in range(Alist):
-            diffA.append(op)
+            diffA.append("1")
         for ind in range(Blist):
-            diffB.append(op)
-
+            diffB.append("2")
+                
     dic = {0: diffA, 1: diffB, 2: resa, 3: resb}
     return dic
