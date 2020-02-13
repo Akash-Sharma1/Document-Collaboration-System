@@ -51,8 +51,7 @@
   <h2>Enter the commit number that are to be compared.</h2>
   <form method="POST">
     {% csrf_token %}
-    <input type="text" name="c1">
-    <input type="text" name="c2">
+    <input type="text" name="num">
     <input type="submit">
   </form>
   
@@ -60,8 +59,8 @@
 <h2>History</h2>
 <table id="doc">
   <tr>
-    <th>Commit Id</th>
-    <th>Saved at</th>
+    <th>Request Id</th>
+    <th>Requested at</th>
     <th>Document</th>
     <th>Branch</th>
 </tr>

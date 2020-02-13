@@ -59,6 +59,7 @@
         <span type="saved" id="showsaved">Document is Saved</span>
     </p>
 <input type="hidden" id="text" value="{{para}}">
+
 <form action=http://127.0.0.1:8000/save method="POST">
     {% csrf_token %}
 
@@ -73,7 +74,8 @@
     <input type="button" Value="Compare Version" id="Compare" ></button>
     <input type="button" Value="View History" id="History" ></button>
     <input type="button" Value="Pull from master" id="Pull" ></button>
-    <input type="button" Value="Push to master" id="Push" ></button>
+    <input type="button" Value="Push to master" id="Push"></button>
+    <input type="button" Value="See PRs" id="PRS"></button>
 </form>
 </div>
 </center>
@@ -83,6 +85,13 @@
     document.getElementById("Document").innerHTML=val;
     document.getElementById("showsaved").style.color='#2DE372';
     document.getElementById("Document").selectionStart=val.length; 
+
+    document.getElementById("Push").addEventListener("click", function(event){
+        if(document.getElementById("showsaved").innerHTML=='Document is Not Saved' || document.getElementById("showsaved").innerHTML=='Please save the document First'){
+            document.getElementById("showsaved").innerHTML='Please save the document First';
+            event.preventDefault();
+        }
+    });
    
 </script>
 
@@ -102,6 +111,16 @@
     
     document.querySelector('#History').onclick = function(e) {
         window.location.pathname = '/history/'+Name+'/'+ roomName + '/';
+    };
+    
+    document.querySelector('#Push').onclick = function(e) {
+        window.location.pathname = '/push/'+Name+'/'+ roomName + '/'+ Branch+'/';
+    };
+    document.querySelector('#Pull').onclick = function(e) {
+        window.location.pathname = '/pull/'+Name+'/'+ roomName + '/'+ Branch+'/';
+    };
+    document.querySelector('#PRS').onclick = function(e) {
+        window.location.pathname = '/PRS/'+Name+'/'+ roomName + '/'+ Branch+'/';
     };
     ///Fault in reloading others
   /*
