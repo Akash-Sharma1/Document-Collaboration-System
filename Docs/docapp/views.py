@@ -179,46 +179,38 @@ def compare(request, room_name, c_name):
         q2 = Commits.objects.filter(id=request.POST['c2']).all()
         b = q2[0].Document
         dic = lcs(a, b)
-        a = textdiff(a, dic[0], dic[2])
-        b = textdiff(b, dic[1], dic[3])
+        ans_a = change_tostring(a, dic[0], dic[2])
+        ans_b = change_tostring(b, dic[1], dic[3])
+        # ans contains { Document , Word matched 1 or not 0 , line is added 1 or deleted 2 or same 0 }
         return render(request, 'docapp/TextDifferentiator.html', {
-            'a': a,
-            'b': b,
+            'info_a': ans_a,
+            'info_b': ans_b,
             'n1': q1[0].id,
             'n2': q2[0].id
         })
 
 # 0 nochange, 2 green, 1 red
-def textdiff(a, dic, rs):
-    res = []
+def change_tostring(a, dic, rs):
+    res = ""
     for i in range(len(a)):
         if a[i] != '\r':
-            res.append(rs[i])
+            res+=str(rs[i])
     a = a.replace("\r\n", "\n")
-
-    stra = "<span type=\"" + str(dic[0]) + "\">"
-    line = 1
-    i = 0
-    while i < len(a):
-        if a[i] == '\n':
-            stra += "</span><br>"
-            if line < len(dic):
-                stra += "<span type=\"" + str(dic[line]) + "\">"
-            i += 1
-            line += 1
-        elif res[i] == 1:
-            stra += "<font color=\"green\">"
-            while i < len(a) and res[i] == 1 and a[i] != '\n':
-                stra += a[i]
-                i += 1
-            stra += "</font>"
-        else:
-            stra += "<font color=\"red\">"
-            while i < len(a) and res[i] == 0 and a[i] != '\n':
-                stra += a[i]
-                i += 1
-            stra += "</font>"
-    return stra
+    
+    Doc=""
+    line = 0
+    linecolor=""
+    for i in a:
+        if line==0:
+            Doc+=str(dic[line])
+            line+=1
+        if i=='\n':
+            Doc+=str(dic[line])
+            line+=1
+            
+    # Doc stores the line color weather the line is a +(1) or -(2) or null(0)
+    # res stores the color of each character wheather is mathced or not 1 for matched 0 for not matched
+    return {'Document': a,'wordinfo':res,'lineinfo':Doc}
 
 
 def lcs(a, b):
