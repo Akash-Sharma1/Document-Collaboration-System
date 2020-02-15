@@ -1,0 +1,157 @@
+<style>
+    textarea {
+        outline: none;
+      resize: none;
+      width: 1066px;
+      height: 600px;     
+      border-radius: 4px;
+      border: 1px solid #cccccc;
+      padding: 5px;
+    }
+    input[type='submit'] {
+        width: 10%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    input[type='button'] {
+        width: 10%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    input[type=text], select {
+        padding: 8px 20px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+    body {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 10px;
+        text-align: center;
+        font-family: Arial;
+        color: rgb(49, 47, 47);
+        margin: 0;
+      }
+      span[type="saved"]{
+        position: absolute;
+        left: 1000px;
+        width: 200px;
+        height: 20px;
+    }
+    div[type="edit"]{
+        padding: 12px;
+        margin: 5;
+        border-style: ridge;
+      }
+    span[type="2"] {
+        color: #F7A28C;
+    }
+    span[type="1"] {
+        color: #72F177;
+    }
+    span[type="0"]{
+        color:rgb(49, 47, 47);
+    }
+</style>
+
+<center>
+<div class="groove" >
+
+    <p style="font-size:120%;"><b>Merger</b></p>
+
+<form method="POST">
+    {% csrf_token %}
+    <pre><div type="edit" id="Document" contenteditable="true" align="left" valign="top" 
+        style="font-size:160%;" ></div></pre>
+    <input type="submit" Value="Merge" id="submit"></button>
+</form>
+</div>
+</center>
+</body>
+<textarea id="adoc" style="display:none;">{{info_a.Document}}</textarea>
+<textarea  id="bdoc" style="display:none;">{{info_b.Document}}</textarea>
+<textarea id="aline" style="display:none;">{{info_a.lineinfo}}</textarea>
+<textarea  id="bline" style="display:none;">{{info_b.lineinfo}}</textarea>
+<input type='hidden' id='br' value={{branch}}/>
+<script>
+    var a=document.getElementById('adoc').value;
+    var b=document.getElementById('bdoc').value;
+
+    var lineinfo_a = document.getElementById('aline').value;
+    var lineinfo_b = document.getElementById('bline').value; 
+    var branch = document.getElementById('br').value;
+    var linenum_a=lineinfo_a.length;
+    var linenum_b=lineinfo_b.length;
+    var i=0,j=0;
+    var final="<span type='0'>";
+    var x=0,y=0;
+    while(i<linenum_a || j<linenum_b){
+        if(j<linenum_b && lineinfo_b[j]=='2'){
+            final+="</span><span type='1'>>>>>>>>>>"+branch+"#</span>\n<span type='0'>";
+            while(j<linenum_b && lineinfo_b[j]=='2'){
+                while(y<b.length && b[y]!='\n'){
+                    final+=b[y];
+                    y+=1;
+                }
+                if(y<b.length && b[y]=='\n'){
+                    final+='\n'
+                    y+=1;
+                }
+                else if(y==b.length){
+                    final+='\n';
+                }
+                j+=1;
+            }
+            final+="</span><span type='1'><<<<<<<<<"+branch+"#</span>\n<span type='0'>";
+        }
+        else if(i<linenum_a && lineinfo_a[i]=='1'){
+            final+="</span><span type='2'>>>>>>>>>>master#</span>\n<span type='0'>";
+            while(i<linenum_a && lineinfo_a[i]=='1'){
+                while(x<a.length && a[x]!='\n'){
+                    final+=a[x];
+                    x+=1;
+                }
+                if(x<a.length && a[x]=='\n'){
+                    final+='\n'
+                    x+=1;
+                }
+                else if(x==a.length){
+                    final+='\n';
+                }
+                i+=1;
+            }
+            final+="</span><span type='2'><<<<<<<<<master#</span>\n<span type='0'>";
+        }
+        else{
+            while(x<a.length && a[x]!='\n'){
+                final+=a[x];
+                x+=1;
+                y+=1;
+            }
+            if(x<a.length && a[x]=='\n'){
+                final+='\n'
+                x+=1;
+                y+=1;
+            }
+            else if(x==a.length){
+                final+='\n';
+            }
+            i+=1;
+            j+=1;
+        }
+    }
+    final+='</span>';
+    document.getElementById('Document').innerHTML=final;
+    console.log(final);
+</script>

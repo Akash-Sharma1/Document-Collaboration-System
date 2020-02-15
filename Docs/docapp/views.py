@@ -94,17 +94,17 @@ def pull_requests(request,room_name,c_name,branch_name):
         })
     else:
         q1=Pulls.objects.filter(id=request.POST['num']).all()
-        a=q1[0].Document
+        b=q1[0].Document
         q2=Commits.objects.filter(Docid=room_name, branch='master').all()
-        b=q2[len(q2)-1].Document
-        dic=lcs(a,b)
-        a=textdiff(a,dic[0],dic[2])
-        b=textdiff(b,dic[1],dic[3])
-        return render(request,'docapp/TextDifferentiator.html',{
-            'a':a,
-            'b':b,
-            'n1':q1[0].id,
-            'n2':q2[0].id
+        a=q2[len(q2)-1].Document
+        dic = lcs(a, b)
+        ans_a = change_tostring(a, dic[0], dic[2])
+        ans_b = change_tostring(b, dic[1], dic[3])
+        # ans contains { Document , Word matched 1 or not 0 , line is added 1 or deleted 2 or same 0 }
+        return render(request, 'docapp/Merger.html', {
+            'info_a': ans_a,
+            'info_b': ans_b,
+            'branch': q1[0].branch
         })
 
 def pull(request,room_name,c_name,branch_name):
