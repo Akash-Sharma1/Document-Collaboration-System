@@ -208,7 +208,7 @@ def change_tostring(a, dic, rs):
             Doc+=str(dic[line])
             line+=1
             
-    # Doc stores the line color weather the line is a +(1) or -(2) or null(0)
+    # Doc stores the lil0ne color weather the line is a +(1) or -(2) or null(0)
     # res stores the color of each character wheather is mathced or not 1 for matched 0 for not matched
     return {'Document': a,'wordinfo':res,'lineinfo':Doc}
 
@@ -256,7 +256,12 @@ def lcs(a, b):
                 if resa[i] == 1:
                     matchA += 1
                 i += 1
-
+            if i<len(a):
+                if resa[i] == 1:
+                    matchA+=1
+                if resa[i+1] == 1:
+                    matchA+=1
+                wordsA+=2
             i += 2
             lineA += 1
             if wordsA > 0 and matchA == 0:
@@ -275,7 +280,13 @@ def lcs(a, b):
                 if resb[j] == 1:
                     matchB += 1
                 j += 1
-
+            if j<len(b):
+                if resb[j] == 1:
+                    matchB+=1
+                if resb[j+1] == 1:
+                    matchB+=1
+                wordsB+=2
+                
             j += 2
             lineB += 1
             if wordsB > 0 and matchB == 0:

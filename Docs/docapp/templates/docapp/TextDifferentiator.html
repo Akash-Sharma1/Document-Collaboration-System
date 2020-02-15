@@ -90,7 +90,7 @@
     var opa="";
     for (i=0;i<lineinfo.length;i++){
         if(lineinfo[i]=='1'){
-            opa+='+<br>';
+            opa+='<span type="1">+</span><br>';
         }
         else{
             opa+=' <br>'
@@ -102,13 +102,14 @@
     b=add_color_towords(wordinfo,b,'red');
     b=add_color_toline(lineinfo,b);
 
+    
     document.getElementById('1').innerHTML=a;
     document.getElementById('2').innerHTML=b;
 
     var opb="";
     for (i=0;i<lineinfo.length;i++){
         if(lineinfo[i]=='2'){
-            opb+='-<br>';
+            opb+='<span type="2">-</span><br>';
         }
         else{
             opb+=' <br>'
@@ -122,6 +123,7 @@
     }
     document.getElementById('linesplit1').innerHTML=str;
     document.getElementById('linesplit2').innerHTML=str;
+    
     console.log(a);
 
 
@@ -144,23 +146,46 @@
         }
         return final_a;
     }
+    function checkforfunc(a,pos){
+        if(pos+5<a.length && a[pos]=='<' && a[pos+1]=='f' && a[pos+2]=='o' && a[pos+3]=='n' && a[pos+4]=='t')
+            return 1;
+        else if(pos+5<a.length && a[pos]=='<' && a[pos+1]=='/' && a[pos+2]=='f' && a[pos+3]=='o' && a[pos+4]=='n' && a[pos+5]=='t')
+            return -1;
+        else return 0;
+    }
     function add_color_toline(lineinfo,a){
         var final_a=""
         var linenum=0;
+        var flag=0;
+        var prev_color="black";
         for (i=0;i<a.length;i++){
             if(linenum==0){
                 final_a+='<span type=\''+lineinfo[linenum]+'\'>';
                 linenum+=1;
             }
             if(a[i]=='\n'){
+                if(flag==1)
+                    final_a+='</font>';
                 final_a+='</span><br>'
-                final_a+='<span type=\''+lineinfo[linenum]+'\'>';
+                if (flag==1)    
+                    final_a+='<span type=\''+lineinfo[linenum]+'\'><font color=\''+prev_color+'\'>';
+                else 
+                    final_a+='<span type=\''+lineinfo[linenum]+'\'>';
                 linenum+=1;
             }
             else{
                 final_a+=a[i];
+                flag+=checkforfunc(a,i);
+                if(checkforfunc(a,i)==1){
+                    prev_color="";
+                    var j=i+13;
+                    while(j<a.length && a[j]!='\''){
+                        prev_color+=a[j];
+                        j+=1;
+                        console.log(prev_color);
+                    }
+                }
             }
-
         }
         return final_a;
     }
