@@ -93,21 +93,23 @@
 <script>
     function func(){
         document.getElementById('TA').value=document.getElementById('Document').innerHTML;
+        var branch = document.getElementById('br').value;
+        document.getElementById('br').value=branch.substring(0,branch.length-1);
     }
     var a=document.getElementById('adoc').value;
     var b=document.getElementById('bdoc').value;
 
     var lineinfo_a = document.getElementById('aline').value;
     var lineinfo_b = document.getElementById('bline').value; 
-    var branch = document.getElementById('br').value;
     var linenum_a=lineinfo_a.length;
     var linenum_b=lineinfo_b.length;
+    var branch = document.getElementById('br').value;
     var i=0,j=0;
     var final="<span type='0'>";
     var x=0,y=0;
     while(i<linenum_a || j<linenum_b){
         if(j<linenum_b && lineinfo_b[j]=='2'){
-            final+="</span><span type='1'>>>>>>>>>>"+branch+"#</span>\n<span type='0'>";
+            final+="</span><span type='1'>>>>>>>>>>#"+branch+"#</span>\n<span type='0'>";
             while(j<linenum_b && lineinfo_b[j]=='2'){
                 while(y<b.length && b[y]!='\n'){
                     final+=b[y];
@@ -122,10 +124,10 @@
                 }
                 j+=1;
             }
-            final+="</span><span type='1'><<<<<<<<<"+branch+"#</span>\n<span type='0'>";
+            final+="</span><span type='1'><<<<<<<<<#"+branch+"#</span>\n<span type='0'>";
         }
         else if(i<linenum_a && lineinfo_a[i]=='1'){
-            final+="</span><span type='2'>>>>>>>>>>master#</span>\n<span type='0'>";
+            final+="</span><span type='2'>>>>>>>>>>#master#</span>\n<span type='0'>";
             while(i<linenum_a && lineinfo_a[i]=='1'){
                 while(x<a.length && a[x]!='\n'){
                     final+=a[x];
@@ -140,7 +142,7 @@
                 }
                 i+=1;
             }
-            final+="</span><span type='2'><<<<<<<<<master#</span>\n<span type='0'>";
+            final+="</span><span type='2'><<<<<<<<<#master#</span>\n<span type='0'>";
         }
         else{
             while(x<a.length && a[x]!='\n'){

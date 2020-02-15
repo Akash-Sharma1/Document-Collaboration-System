@@ -105,7 +105,7 @@ def pull_requests(request,room_name,c_name,branch_name):
             'info_b': ans_b,
             'branch': q1[0].branch,
             'room_name_json': q1[0].Docid,
-            'name_json':  'Branch-->'+q1[0].branch
+            'name_json':  q1[0].branch
         })
 
     
@@ -139,11 +139,22 @@ def saveit(request):
         author=request.POST['author']
         Document=request.POST['Document']
         branch=request.POST['branch']
+        branch_from=request.POST['branch_from']
         
         #to be used by only merge functionality to delete pull request when merging them
         ismerge=request.POST['ismerge']
         if ismerge=='1':
-            branch_from=request.POST['branch_from']
+            Document = Document.replace('</span><span type="2">&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;#'+branch+'#</span>', "")
+            Document = Document.replace('</span><span type="2">&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;#'+branch_from+'#</span>', "")
+            Document = Document.replace('</span><span type="2">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;#'+branch+'#</span>', "")
+            Document = Document.replace('</span><span type="2">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;#'+branch_from+'#</span>', "")
+            Document = Document.replace('</span><span type="1">&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;#'+branch+'#</span>', "")
+            Document = Document.replace('</span><span type="1">&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;#'+branch_from+'#</span>', "")
+            Document = Document.replace('</span><span type="1">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;#'+branch+'#</span>', "")
+            Document = Document.replace('</span><span type="1">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;#'+branch_from+'#</span>', "")
+            Document = Document.replace("</span>", "")
+            Document = Document.replace('<span type="0">', "")
+            print(Document)
             Pulls.objects.filter(Docid=Docid,branch=branch_from).delete()
         
         sha = hashlib.sha1(Document.encode())

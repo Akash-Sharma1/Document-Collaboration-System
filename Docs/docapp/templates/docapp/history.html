@@ -31,7 +31,6 @@
             <th>Last saved by</th>
             <th>Document</th>
             <th>Branch</th>
-            <th>Is Difference</th>
         </tr>
         
         {% for val in arr %}
@@ -41,7 +40,6 @@
             <td>{{val.author}}</td>
             <td><pre>{{val.Document}}</pre></td>
             <td>{{val.branch}}</td>
-            <td>{{val.isdiff}}</td>
         </tr>
         {% endfor %}
 
