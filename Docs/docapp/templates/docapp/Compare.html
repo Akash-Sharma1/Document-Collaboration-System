@@ -51,7 +51,9 @@
   <h2>Enter the commit number that are to be compared.</h2>
   <form method="POST">
     {% csrf_token %}
+    New Commit number:
     <input type="text" name="c1">
+    Prev Commit number:
     <input type="text" name="c2">
     <input type="submit">
   </form>
@@ -68,7 +70,7 @@
 
 {% for val in arr %}
 <tr>
-    <td>{{val.id}}</td>
+    <td>{{val.id}} </td>
     <td>{{val.timestamp}}</td>
     <td><pre>{{val.Document}}</pre></td>
     <td>{{val.branch}}</td>

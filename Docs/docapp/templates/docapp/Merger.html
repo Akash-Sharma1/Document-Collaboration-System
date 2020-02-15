@@ -70,11 +70,18 @@
 
     <p style="font-size:120%;"><b>Merger</b></p>
 
-<form method="POST">
+<form method="POST" action=http://127.0.0.1:8000/save>
     {% csrf_token %}
-    <pre><div type="edit" id="Document" contenteditable="true" align="left" valign="top" 
-        style="font-size:160%;" ></div></pre>
-    <input type="submit" Value="Merge" id="submit"></button>
+    <pre><div type="edit" id="Document" contenteditable="true" align="left" valign="top" style="font-size:160%;" ></div></pre>
+    <pre><textarea id="TA" name="Document" style="display:none;"></textarea></pre>
+    
+    <input type="hidden" name="docid" value={{room_name_json}}>
+    <input type="hidden" name="author" value={{name_json}}>
+    <input type="hidden" name="branch" value='master'>
+    <input type="hidden" name="ismerge" value='1'>
+    <input type='hidden' id='br' name='branch_from' value={{branch}}/>
+    
+    <input type="submit" Value="Merge" id="submit" onclick=func()></button>
 </form>
 </div>
 </center>
@@ -83,8 +90,10 @@
 <textarea  id="bdoc" style="display:none;">{{info_b.Document}}</textarea>
 <textarea id="aline" style="display:none;">{{info_a.lineinfo}}</textarea>
 <textarea  id="bline" style="display:none;">{{info_b.lineinfo}}</textarea>
-<input type='hidden' id='br' value={{branch}}/>
 <script>
+    function func(){
+        document.getElementById('TA').value=document.getElementById('Document').innerHTML;
+    }
     var a=document.getElementById('adoc').value;
     var b=document.getElementById('bdoc').value;
 

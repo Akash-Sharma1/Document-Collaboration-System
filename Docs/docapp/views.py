@@ -60,7 +60,6 @@ def history(request, room_name,c_name):
             'timestamp': data.timestamp,
             'Document': data.Document,
             'id': data.id,
-            'isdiff': data.isdiff,
             'branch': data.branch,
         })
     return render(request, 'docapp/history.html', {'arr':Document})
@@ -104,9 +103,12 @@ def pull_requests(request,room_name,c_name,branch_name):
         return render(request, 'docapp/Merger.html', {
             'info_a': ans_a,
             'info_b': ans_b,
-            'branch': q1[0].branch
+            'branch': q1[0].branch,
+            'room_name_json': q1[0].Docid,
+            'name_json':  'Branch-->'+q1[0].branch
         })
 
+    
 def pull(request,room_name,c_name,branch_name):
     return gotoeditpage(request,room_name,c_name,'master')
 
@@ -137,6 +139,12 @@ def saveit(request):
         author=request.POST['author']
         Document=request.POST['Document']
         branch=request.POST['branch']
+        
+        #to be used by only merge functionality to delete pull request when merging them
+        ismerge=request.POST['ismerge']
+        if ismerge=='1':
+            branch_from=request.POST['branch_from']
+            Pulls.objects.filter(Docid=Docid,branch=branch_from).delete()
         
         sha = hashlib.sha1(Document.encode())
         sha = sha.hexdigest()
