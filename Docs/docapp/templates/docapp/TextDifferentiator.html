@@ -1,5 +1,8 @@
 <style>
     #doc {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
         font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
         border-collapse: collapse;
         width: 100%;
@@ -102,6 +105,7 @@
     b=add_color_towords(wordinfo,b,'red');
     b=add_color_toline(lineinfo,b);
 
+    console.log(lineinfo)
     
     document.getElementById('1').innerHTML=a;
     document.getElementById('2').innerHTML=b;
@@ -124,7 +128,7 @@
     document.getElementById('linesplit1').innerHTML=str;
     document.getElementById('linesplit2').innerHTML=str;
     
-    console.log(a);
+    console.log(b);
 
 
     function add_color_towords(wordinfo, a, color){
@@ -182,7 +186,7 @@
                     while(j<a.length && a[j]!='\''){
                         prev_color+=a[j];
                         j+=1;
-                        console.log(prev_color);
+                        //console.log(prev_color);
                     }
                 }
             }

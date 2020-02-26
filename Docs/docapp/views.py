@@ -153,6 +153,8 @@ def saveit(request):
             Document = Document.replace('</span><span type="1">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;#'+branch+'#</span>', "")
             Document = Document.replace('</span><span type="1">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;#'+branch_from+'#</span>', "")
             Document = Document.replace("</span>", "")
+            Document = Document.replace("<div>", "")
+            Document = Document.replace("</div>", "")
             Document = Document.replace('<span type="0">', "")
             print(Document)
             Pulls.objects.filter(Docid=Docid,branch=branch_from).delete()
@@ -223,7 +225,7 @@ def change_tostring(a, dic, rs):
         if line==0:
             Doc+=str(dic[line])
             line+=1
-        if i=='\n':
+        if i=='\n' and line<len(dic):
             Doc+=str(dic[line])
             line+=1
             
