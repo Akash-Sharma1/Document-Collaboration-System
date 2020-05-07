@@ -60,7 +60,7 @@
     </p>
 <input type="hidden" id="text" value="{{para}}">
 
-<form action=http://127.0.0.1:8000/save method="POST">
+<form action='/save' method="POST">
     {% csrf_token %}
 
     <input type="hidden" name="docid" value={{room_name_json}}>

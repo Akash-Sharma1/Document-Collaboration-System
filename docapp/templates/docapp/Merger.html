@@ -70,7 +70,7 @@
 
     <p style="font-size:120%;"><b>Merger</b></p>
 
-<form method="POST" action=http://127.0.0.1:8000/save>
+<form method="POST" action='/save'>
     {% csrf_token %}
     <pre><div type="edit" id="Document" contenteditable="true" align="left" valign="top" style="font-size:160%;" ></div></pre>
     <pre><textarea id="TA" name="Document" style="display:none;"></textarea></pre>
