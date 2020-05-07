@@ -1,1 +1,1 @@
-web: gunicorn gettingstarted.asgi --log-file -
+web: gunicorn docapp.asgi --log-file -
