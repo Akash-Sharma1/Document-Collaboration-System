@@ -1,1 +1,1 @@
-web: python website/manage.py runserver 157.38.44.237:8000
+web: gunicorn gettingstarted.asgi --log-file -
